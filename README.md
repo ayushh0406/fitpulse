@@ -1,5 +1,5 @@
 FitPulse 💪
-A Hevy-inspired workout tracker built for MumbAI Hack Day’s Vibe Code category, FitPulse is a frontend-only, multi-page React app designed to make fitness tracking lovable and engaging. With a neobrutalist UI (bold borders, vibrant green #10B981 accents, heavy shadows) and Lottie animations (dumbbell bounce, confetti, heart pulse), FitPulse solves the 70% gym app quit rate by offering quick workout logging, smart suggestions, progress tracking, and a mock community. Built with React Router, shdcn/ui, and Chart.js, it’s hyper-responsive (mobile, tablet, desktop) and opens with an instant fitness vibe that motivates busy folks to stay consistent.
+FitPulse is a Hevy-inspired workout tracker built for MumbAI Hack Day’s Vibe Code category. A frontend-only, multi-page React app, it makes fitness tracking lovable and engaging with a neobrutalist UI (bold borders, vibrant green #10B981 accents, heavy shadows) and Lottie animations (dumbbell bounce, confetti, heart pulse). It solves the 70% gym app quit rate by offering quick workout logging, smart suggestions, progress tracking, and a mock community. Built with React Router, shdcn/ui, and Chart.js in 4-6 hours using v0.dev, it’s hyper-responsive (mobile, tablet, desktop) and opens with an instant fitness vibe to keep busy folks consistent.
 Table of Contents
 
 Overview
@@ -16,7 +16,7 @@ Contributing
 License
 
 Overview
-FitPulse is a frontend-only React app inspired by Hevy (https://www.hevyapp.com/), designed to keep users motivated with a neobrutalist UI (white #FFFFFF, black #000000, green #10B981) and lovable features like smart workout suggestions, a motivational streak counter, and personalized progress insights. Built in 4-6 hours using v0.dev, it’s a scalable MVP that tackles the high dropout rate of gym apps by making workout tracking fun, intuitive, and socially engaging.
+FitPulse is a frontend-only React app inspired by Hevy (https://www.hevyapp.com/), designed to keep users motivated with a neobrutalist UI (white #FFFFFF, black #000000, green #10B981) and lovable features like smart workout suggestions, motivational streak counter, and personalized progress insights. Built in 4-6 hours using v0.dev, it’s a scalable MVP that tackles the high dropout rate of gym apps by making workout tracking fun, intuitive, and socially engaging.
 Problem & Solution
 
 Problem: 70% of gym app users quit within 30 days due to demotivating UX and complex interfaces (generic fitness stat).
@@ -108,32 +108,32 @@ Engage with mock community feed, like/share posts (copies text to clipboard).
 
 
 Responsive: Works seamlessly on mobile (360px), tablet (768px), desktop (1200px).
-Accessibility: ARIA labels, high contrast, keyboard-navigable.
+Accessibility: ARIA labels (aria-label="Log Workout Page"), high contrast, keyboard-navigable.
 
 Folder Structure
-FitPulse/
-├── src/
-│   ├── pages/
-│   │   ├── Home.jsx
-│   │   ├── LogWorkout.jsx
-│   │   ├── ProgressCommunity.jsx
-│   ├── components/
-│   │   ├── NavBar.jsx
-│   │   ├── WorkoutCard.jsx
-│   │   ├── FeedCard.jsx
-│   ├── assets/
-│   │   ├── lottie/
-│   │   │   ├── dumbbell.json
-│   │   │   ├── barbell.json
-│   │   │   ├── fire.json
-│   │   │   ├── confetti.json
-│   │   │   ├── heart.json
-│   ├── App.jsx
-│   ├── index.css (Tailwind)
-├── public/
-│   ├── index.html
-├── README.md
-├── package.json
+**FitPulse/**
+├── **src/**
+│   ├── **pages/**
+│   │   ├── **Home.jsx**
+│   │   ├── **LogWorkout.jsx**
+│   │   ├── **ProgressCommunity.jsx**
+│   ├── **components/**
+│   │   ├── **NavBar.jsx**
+│   │   ├── **WorkoutCard.jsx**
+│   │   ├── **FeedCard.jsx**
+│   ├── **assets/**
+│   │   ├── **lottie/**
+│   │   │   ├── **dumbbell.json**
+│   │   │   ├── **barbell.json**
+│   │   │   ├── **fire.json**
+│   │   │   ├── **confetti.json**
+│   │   │   ├── **heart.json**
+│   ├── **App.jsx**
+│   ├── **index.css** (**Tailwind**)
+├── **public/**
+│   ├── **index.html**
+├── **README.md**
+├── **package.json**
 
 Screenshots
 (Add screenshots here post-deployment)  
@@ -146,7 +146,7 @@ Hackathon Appeal
 
 Impact: Solves 70% gym app quit rate with quick logging, smart suggestions, progress insights, and mock community—motivates like Hevy’s 8M+ users.
 Lovable UX: Motivational quotes, streak counter, and Lottie animations (confetti, fire, heart) make fitness fun and addictive.
-Neobrutalist Vibe: Bold borders, green accents, and heavy shadows scream modern and playful, aligning with Hevy’s premium feel.
+Neobrutalist Vibe: Bold borders, green accents, and heavy shadows align with Hevy’s premium feel.
 Scalability: Frontend-only MVP, ready for backend (e.g., Firebase for real community).
 Vibe Code Fit: Practical features, tagda UI, and 4-6 hour build time nail UX and presentation.
 
