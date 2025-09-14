@@ -1,22 +1,51 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { Star, Download, Dumbbell } from "lucide-react";
+import { Star, Download, Dumbbell, Flame } from "lucide-react";
 import MotivationalQuote from "@/components/MotivationalQuote";
 import heroImage from "@/assets/fitness-hero.jpg";
 
 const Home = () => {
   const [animateHero, setAnimateHero] = useState(false);
   const [animateDumbbell, setAnimateDumbbell] = useState(false);
+  const [streak, setStreak] = useState(0);
 
   useEffect(() => {
     // Trigger animations on mount
     setAnimateHero(true);
     const dumbbellTimer = setTimeout(() => setAnimateDumbbell(true), 500);
     
+    // Load streak from localStorage
+    loadStreak();
+    
     return () => clearTimeout(dumbbellTimer);
   }, []);
+
+  const loadStreak = () => {
+    const streakData = localStorage.getItem('fitpulse-streak');
+    if (streakData) {
+      const { lastWorkout, streakCount } = JSON.parse(streakData);
+      const today = new Date().toDateString();
+      const lastDate = new Date(lastWorkout).toDateString();
+      
+      // Check if streak is still valid (within last 2 days)
+      const daysDiff = Math.floor((new Date().getTime() - new Date(lastWorkout).getTime()) / (1000 * 3600 * 24));
+      
+      if (daysDiff <= 1) {
+        setStreak(streakCount);
+      } else {
+        // Reset streak if more than 1 day gap
+        setStreak(0);
+        localStorage.setItem('fitpulse-streak', JSON.stringify({
+          lastWorkout: today,
+          streakCount: 0
+        }));
+      }
+    } else {
+      setStreak(3); // Default mock streak for demo
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -94,6 +123,23 @@ const Home = () => {
                 </CardContent>
               </Card>
             </div>
+
+            {/* Streak Counter */}
+            <Card className={`brutal-card max-w-md mx-auto mb-8 ${animateHero ? 'slide-up' : 'opacity-0'}`}>
+              <CardContent className="p-6 text-center">
+                <div className="flex items-center justify-center space-x-3 mb-2">
+                  <Flame className="h-8 w-8 text-orange-500 animate-pulse fire-animation" />
+                  <div>
+                    <p className="text-3xl font-black text-fitness-green">{streak}</p>
+                    <p className="text-sm font-medium text-muted-foreground">Day Streak!</p>
+                  </div>
+                  <Flame className="h-8 w-8 text-orange-500 animate-pulse fire-animation" />
+                </div>
+                <p className="text-fitness-green font-bold">
+                  {streak > 0 ? "You're on fire! Keep it burning! 🔥" : "Start your streak today! 💪"}
+                </p>
+              </CardContent>
+            </Card>
 
             {/* Motivational Quote */}
             <div className={`max-w-lg mx-auto ${animateHero ? 'slide-up' : 'opacity-0'}`}>

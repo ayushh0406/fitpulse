@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { BarChart3, TrendingUp, Heart, Share, Copy, Trophy, Target, Zap } from "lucide-react";
+import { BarChart3, TrendingUp, Heart, Share, Copy, Trophy, Target, Zap, Brain } from "lucide-react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { useToast } from "@/hooks/use-toast";
 
@@ -49,12 +49,34 @@ const communityFeed = [
 const Progress = () => {
   const [likedPosts, setLikedPosts] = useState<number[]>([]);
   const [chartAnimated, setChartAnimated] = useState(false);
+  const [progressInsight, setProgressInsight] = useState("");
   const { toast } = useToast();
 
   useEffect(() => {
     // Trigger chart animation on mount
     setTimeout(() => setChartAnimated(true), 500);
+    
+    // Generate progress insight
+    generateProgressInsight();
   }, []);
+
+  const generateProgressInsight = () => {
+    const savedWorkouts = localStorage.getItem('fitpulse-workouts');
+    
+    if (savedWorkouts) {
+      const workouts = JSON.parse(savedWorkouts);
+      const totalWeight = workouts.reduce((sum: number, workout: any) => sum + workout.weight, 0);
+      const totalReps = workouts.reduce((sum: number, workout: any) => sum + workout.reps, 0);
+      
+      if (totalWeight > 0) {
+        setProgressInsight(`Amazing! You've lifted ${totalWeight}kg total across ${workouts.length} sets with ${totalReps} reps. That's like lifting a small car! 🚗💪`);
+      } else {
+        setProgressInsight("You lifted 500kg more this week! Your strength gains are off the charts. Keep crushing those PRs! 💪🔥");
+      }
+    } else {
+      setProgressInsight("You lifted 500kg more this week! Your strength gains are off the charts. Keep crushing those PRs! 💪🔥");
+    }
+  };
 
   const handleLike = (postId: number) => {
     setLikedPosts(prev => 
@@ -186,6 +208,34 @@ const Progress = () => {
               <div className="mt-4 p-4 bg-fitness-green text-white rounded-lg text-center">
                 <p className="font-bold text-lg">+20kg Progress! 🚀</p>
                 <p className="text-sm opacity-90">You're absolutely crushing it!</p>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Progress Insights */}
+          <Card className="brutal-card">
+            <CardHeader>
+              <CardTitle className="text-xl font-bold flex items-center space-x-2">
+                <Brain className="h-5 w-5 text-fitness-green" />
+                <span>Progress Insights</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-center p-6 confetti-burst">
+                <div className="bg-fitness-green p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                  <Trophy className="h-8 w-8 text-white" />
+                </div>
+                <p className="text-muted-foreground mb-4">{progressInsight}</p>
+                <div className="grid grid-cols-2 gap-4 mt-4">
+                  <div className="text-center p-3 bg-muted rounded-lg">
+                    <p className="text-2xl font-bold text-fitness-green">85%</p>
+                    <p className="text-sm text-muted-foreground">Consistency</p>
+                  </div>
+                  <div className="text-center p-3 bg-muted rounded-lg">
+                    <p className="text-2xl font-bold text-fitness-green">+12%</p>
+                    <p className="text-sm text-muted-foreground">Strength Gain</p>
+                  </div>
+                </div>
               </div>
             </CardContent>
           </Card>

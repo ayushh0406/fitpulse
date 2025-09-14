@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Dumbbell, Plus, Save, Trash2 } from "lucide-react";
+import { Dumbbell, Plus, Save, Trash2, Lightbulb } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import MotivationalQuote from "@/components/MotivationalQuote";
 
@@ -26,12 +26,24 @@ const routines = [
   "Core Blast"
 ];
 
+const workoutSuggestions = {
+  "Chest Day": ["Bench Press", "Push-ups", "Dumbbell Flyes", "Incline Press"],
+  "Legs": ["Squats", "Deadlifts", "Leg Press", "Lunges"],
+  "Full Body": ["Deadlifts", "Burpees", "Thrusters", "Pull-ups"],
+  "Back & Biceps": ["Pull-ups", "Rows", "Lat Pulldowns", "Bicep Curls"],
+  "Shoulders & Triceps": ["Overhead Press", "Lateral Raises", "Tricep Dips", "Arnold Press"],
+  "HIIT Cardio": ["Mountain Climbers", "Jump Squats", "High Knees", "Burpees"],
+  "Core Blast": ["Planks", "Russian Twists", "Dead Bugs", "Bicycle Crunches"]
+};
+
 const LogWorkout = () => {
   const [selectedRoutine, setSelectedRoutine] = useState("");
   const [reps, setReps] = useState("");
   const [weight, setWeight] = useState("");
   const [workoutSets, setWorkoutSets] = useState<WorkoutSet[]>([]);
   const [showQuote, setShowQuote] = useState(false);
+  const [suggestion, setSuggestion] = useState("");
+  const [showSuggestion, setShowSuggestion] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -102,6 +114,9 @@ const LogWorkout = () => {
     // Save to localStorage
     localStorage.setItem('fitpulse-workouts', JSON.stringify(workoutSets));
     
+    // Update streak counter
+    updateStreak();
+    
     // Show motivational quote
     setShowQuote(true);
     
@@ -120,6 +135,50 @@ const LogWorkout = () => {
       setWorkoutSets([]);
       setShowQuote(false);
     }, 3000);
+  };
+
+  const updateStreak = () => {
+    const today = new Date().toDateString();
+    const streakData = localStorage.getItem('fitpulse-streak');
+    
+    if (streakData) {
+      const { lastWorkout, streakCount } = JSON.parse(streakData);
+      const lastDate = new Date(lastWorkout).toDateString();
+      
+      if (lastDate !== today) {
+        const newStreak = streakCount + 1;
+        localStorage.setItem('fitpulse-streak', JSON.stringify({
+          lastWorkout: today,
+          streakCount: newStreak
+        }));
+      }
+    } else {
+      localStorage.setItem('fitpulse-streak', JSON.stringify({
+        lastWorkout: today,
+        streakCount: 1
+      }));
+    }
+  };
+
+  const suggestWorkout = () => {
+    if (!selectedRoutine) {
+      toast({
+        title: "Select a Routine First",
+        description: "Choose a routine to get personalized exercise suggestions.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const suggestions = workoutSuggestions[selectedRoutine as keyof typeof workoutSuggestions];
+    const randomSuggestion = suggestions[Math.floor(Math.random() * suggestions.length)];
+    setSuggestion(`Try ${randomSuggestion} for ${selectedRoutine}! Perfect for building strength and muscle.`);
+    setShowSuggestion(true);
+    
+    toast({
+      title: "Workout Suggestion! 💡",
+      description: `How about trying ${randomSuggestion}?`,
+    });
   };
 
   return (
@@ -194,13 +253,24 @@ const LogWorkout = () => {
                 </div>
               </div>
 
-              <Button 
-                onClick={addSet}
-                className="add-set-btn btn-brutal-primary w-full py-3 text-lg font-bold hover:scale-105 transition-transform"
-              >
-                <Plus className="h-5 w-5 mr-2" />
-                Add Set
-              </Button>
+              <div className="space-y-3">
+                <Button 
+                  onClick={suggestWorkout}
+                  variant="outline"
+                  className="w-full py-3 text-lg font-bold border-4 border-fitness-green text-fitness-green hover:bg-fitness-green hover:text-white transition-all"
+                >
+                  <Lightbulb className="h-5 w-5 mr-2" />
+                  Suggest Workout
+                </Button>
+                
+                <Button 
+                  onClick={addSet}
+                  className="add-set-btn btn-brutal-primary w-full py-3 text-lg font-bold hover:scale-105 transition-transform"
+                >
+                  <Plus className="h-5 w-5 mr-2" />
+                  Add Set
+                </Button>
+              </div>
             </CardContent>
           </Card>
 
@@ -258,6 +328,27 @@ const LogWorkout = () => {
             </CardContent>
           </Card>
         </div>
+
+        {/* Workout Suggestion */}
+        {showSuggestion && (
+          <Card className="brutal-card mt-8 slide-up">
+            <CardContent className="p-6 text-center">
+              <div className="flex items-center justify-center space-x-2 mb-3">
+                <Lightbulb className="h-6 w-6 text-fitness-green" />
+                <h3 className="text-xl font-bold">Workout Suggestion</h3>
+              </div>
+              <p className="text-muted-foreground">{suggestion}</p>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={() => setShowSuggestion(false)}
+                className="mt-3"
+              >
+                Got it!
+              </Button>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Motivational Quote */}
         {showQuote && (
