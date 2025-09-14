@@ -67,31 +67,32 @@ const Home = () => {
               </CardContent>
             </Card>
 
-            {/* Download Buttons */}
-            <div className={`flex flex-col sm:flex-row gap-4 justify-center items-center mb-12 ${animateHero ? 'slide-up' : 'opacity-0'}`}>
-              <Button 
-                className="btn-brutal-primary w-full sm:w-auto px-8 py-3 text-lg font-bold hover:scale-105 transition-transform"
-                onClick={() => {
-                  // Add button bounce animation
-                  const button = document.activeElement as HTMLElement;
-                  button?.classList.add('confetti-burst');
-                  setTimeout(() => button?.classList.remove('confetti-burst'), 1000);
-                }}
-              >
-                <Download className="h-5 w-5 mr-2" />
-                Download iOS
-              </Button>
-              <Button 
-                className="btn-brutal-primary w-full sm:w-auto px-8 py-3 text-lg font-bold hover:scale-105 transition-transform"
-                onClick={() => {
-                  const button = document.activeElement as HTMLElement;
-                  button?.classList.add('confetti-burst');
-                  setTimeout(() => button?.classList.remove('confetti-burst'), 1000);
-                }}
-              >
-                <Download className="h-5 w-5 mr-2" />
-                Download Android
-              </Button>
+            {/* Statistics Section */}
+            <div className={`grid grid-cols-2 md:grid-cols-4 gap-6 mb-12 ${animateHero ? 'slide-up' : 'opacity-0'}`}>
+              <Card className="brutal-card text-center">
+                <CardContent className="p-4">
+                  <div className="text-2xl font-black text-fitness-green mb-1">50K+</div>
+                  <p className="text-sm text-muted-foreground font-medium">Active Users</p>
+                </CardContent>
+              </Card>
+              <Card className="brutal-card text-center">
+                <CardContent className="p-4">
+                  <div className="text-2xl font-black text-fitness-green mb-1">1M+</div>
+                  <p className="text-sm text-muted-foreground font-medium">Workouts Logged</p>
+                </CardContent>
+              </Card>
+              <Card className="brutal-card text-center">
+                <CardContent className="p-4">
+                  <div className="text-2xl font-black text-fitness-green mb-1">500+</div>
+                  <p className="text-sm text-muted-foreground font-medium">Exercises</p>
+                </CardContent>
+              </Card>
+              <Card className="brutal-card text-center">
+                <CardContent className="p-4">
+                  <div className="text-2xl font-black text-fitness-green mb-1">24/7</div>
+                  <p className="text-sm text-muted-foreground font-medium">Support</p>
+                </CardContent>
+              </Card>
             </div>
 
             {/* Motivational Quote */}
@@ -152,6 +153,110 @@ const Home = () => {
               </CardContent>
             </Card>
           </div>
+        </div>
+      </div>
+
+      {/* Testimonials Section */}
+      <div className="py-16 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="heading-brutal text-3xl font-black mb-4">
+              What Our <span className="text-fitness-green">Warriors</span> Say
+            </h2>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            <Card className="brutal-card">
+              <CardContent className="p-6">
+                <div className="flex items-center mb-4">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="h-4 w-4 text-fitness-green fill-current" />
+                  ))}
+                </div>
+                <p className="text-muted-foreground mb-4">
+                  "FitPulse completely changed my workout routine. The logging is so simple and the progress tracking keeps me motivated!"
+                </p>
+                <div className="flex items-center">
+                  <div className="w-10 h-10 bg-fitness-green rounded-full flex items-center justify-center text-white font-bold mr-3">
+                    M
+                  </div>
+                  <div>
+                    <p className="font-semibold">Mike Chen</p>
+                    <p className="text-sm text-muted-foreground">Powerlifter</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="brutal-card">
+              <CardContent className="p-6">
+                <div className="flex items-center mb-4">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="h-4 w-4 text-fitness-green fill-current" />
+                  ))}
+                </div>
+                <p className="text-muted-foreground mb-4">
+                  "The community feature is amazing! Seeing others' progress pushes me to work harder every day."
+                </p>
+                <div className="flex items-center">
+                  <div className="w-10 h-10 bg-fitness-green rounded-full flex items-center justify-center text-white font-bold mr-3">
+                    S
+                  </div>
+                  <div>
+                    <p className="font-semibold">Sarah Wilson</p>
+                    <p className="text-sm text-muted-foreground">Crossfit Athlete</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="brutal-card">
+              <CardContent className="p-6">
+                <div className="flex items-center mb-4">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="h-4 w-4 text-fitness-green fill-current" />
+                  ))}
+                </div>
+                <p className="text-muted-foreground mb-4">
+                  "Best fitness app I've ever used. Clean design, powerful features, and those motivational quotes hit different!"
+                </p>
+                <div className="flex items-center">
+                  <div className="w-10 h-10 bg-fitness-green rounded-full flex items-center justify-center text-white font-bold mr-3">
+                    J
+                  </div>
+                  <div>
+                    <p className="font-semibold">Jake Rodriguez</p>
+                    <p className="text-sm text-muted-foreground">Bodybuilder</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </div>
+
+      {/* Call to Action */}
+      <div className="py-16 bg-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="inline-block mb-6">
+            <Dumbbell className="h-16 w-16 text-fitness-green mx-auto animate-bounce" />
+          </div>
+          <h2 className="heading-brutal text-3xl lg:text-4xl font-black mb-4">
+            Ready to <span className="text-fitness-green">Transform</span> Your Fitness?
+          </h2>
+          <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+            Join thousands of fitness enthusiasts who are crushing their goals with FitPulse. 
+            Start logging workouts, tracking progress, and connecting with the community today!
+          </p>
+          <Button 
+            className="btn-brutal-primary px-8 py-3 text-lg font-bold hover:scale-105 transition-transform"
+            onClick={() => {
+              window.location.href = '/log-workout';
+            }}
+          >
+            <Dumbbell className="h-5 w-5 mr-2" />
+            Start Your Journey
+          </Button>
         </div>
       </div>
     </div>
