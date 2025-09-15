@@ -43,7 +43,7 @@ const Home = () => {
         }));
       }
     } else {
-      setStreak(3); // Default mock streak for demo
+  // setStreak(3); // Removed static mock streak for demo
     }
   };
 
