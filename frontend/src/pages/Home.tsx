@@ -21,6 +21,11 @@ const Home = () => {
     
     return () => clearTimeout(dumbbellTimer);
   }, []);
+  
+    // Handler to navigate to posture detection page
+    const goToPostureCheck = () => {
+      window.location.href = "/posture-check";
+    };
 
   const loadStreak = () => {
     const streakData = localStorage.getItem('fitpulse-streak');
