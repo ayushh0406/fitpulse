@@ -43,8 +43,7 @@
 - 🖼️ **Exercise selection UI** for targeted posture analysislt for **MumbAI Hack Day’s Vibe Code category**.  
 It’s a **frontend-only React app** that makes workout tracking **fun, simple, and motivating** with a **neobrutalist UI** (bold borders, vibrant green `#10B981` accents, heavy shadows) and **Lottie animations** (dumbbell bounce, confetti, heart pulse).  
 
-👉 Deployed Live: [FitPulse Demo](https://fitpulse-strong-vibes.lovable.app/)  
-👉 GitHub Repo: [FitPulse on GitHub](https://github.com/your-username/fitpulse)  
+
 
 ---
 
