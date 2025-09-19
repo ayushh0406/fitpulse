@@ -215,7 +215,7 @@ uvicorn main:app --reload --host 0.0.0.0 --port 8000
 ## 📱 Usage
 
 1. **Start both servers:**
-   - Frontend: http://localhost:5173/
+   - Frontend: http://localhost:8080/
    - Backend: http://localhost:8000/
 
 2. **Navigate to the Posture Check page:**
