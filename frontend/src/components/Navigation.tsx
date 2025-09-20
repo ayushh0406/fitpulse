@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { Dumbbell, BarChart3, Users, Home } from "lucide-react";
+import { Dumbbell, BarChart3, Camera, Home, Apple } from "lucide-react";
 
 const Navigation = () => {
   return (
@@ -53,6 +53,32 @@ const Navigation = () => {
               <BarChart3 className="h-4 w-4" />
               <span>Progress & Community</span>
             </NavLink>
+            <NavLink
+              to="/posture-check"
+              className={({ isActive }) =>
+                `px-4 py-2 rounded-lg font-semibold transition-all duration-200 flex items-center space-x-2 ${
+                  isActive
+                    ? "bg-fitness-green text-white shadow-brutal"
+                    : "text-white hover:bg-white hover:text-fitness-navy"
+                }`
+              }
+            >
+              <Camera className="h-4 w-4" />
+              <span>Posture Check</span>
+            </NavLink>
+            <NavLink
+              to="/nutrition"
+              className={({ isActive }) =>
+                `px-4 py-2 rounded-lg font-semibold transition-all duration-200 flex items-center space-x-2 ${
+                  isActive
+                    ? "bg-fitness-green text-white shadow-brutal"
+                    : "text-white hover:bg-white hover:text-fitness-navy"
+                }`
+              }
+            >
+              <Apple className="h-4 w-4" />
+              <span>Nutrition Analysis</span>
+            </NavLink>
           </div>
 
           {/* Mobile Navigation */}
@@ -92,6 +118,30 @@ const Navigation = () => {
               }
             >
               <BarChart3 className="h-5 w-5" />
+            </NavLink>
+            <NavLink
+              to="/posture-check"
+              className={({ isActive }) =>
+                `p-2 rounded-lg transition-all duration-200 ${
+                  isActive
+                    ? "bg-fitness-green text-white"
+                    : "text-white hover:bg-white hover:text-fitness-navy"
+                }`
+              }
+            >
+              <Camera className="h-5 w-5" />
+            </NavLink>
+            <NavLink
+              to="/nutrition"
+              className={({ isActive }) =>
+                `p-2 rounded-lg transition-all duration-200 ${
+                  isActive
+                    ? "bg-fitness-green text-white"
+                    : "text-white hover:bg-white hover:text-fitness-navy"
+                }`
+              }
+            >
+              <Apple className="h-5 w-5" />
             </NavLink>
           </div>
         </div>

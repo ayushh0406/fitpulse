@@ -16,7 +16,8 @@ interface WorkoutSet {
   timestamp: Date;
 }
 
-const routines = [
+// Fetch these from an API in a real application
+const [routines, setRoutines] = useState([
   "Chest Day",
   "Legs",
   "Full Body",
@@ -24,9 +25,10 @@ const routines = [
   "Shoulders & Triceps",
   "HIIT Cardio",
   "Core Blast"
-];
+]);
 
-const workoutSuggestions = {
+// In a real application, this would come from an API
+const [workoutSuggestions, setWorkoutSuggestions] = useState({
   "Chest Day": ["Bench Press", "Push-ups", "Dumbbell Flyes", "Incline Press"],
   "Legs": ["Squats", "Deadlifts", "Leg Press", "Lunges"],
   "Full Body": ["Deadlifts", "Burpees", "Thrusters", "Pull-ups"],
@@ -34,7 +36,7 @@ const workoutSuggestions = {
   "Shoulders & Triceps": ["Overhead Press", "Lateral Raises", "Tricep Dips", "Arnold Press"],
   "HIIT Cardio": ["Mountain Climbers", "Jump Squats", "High Knees", "Burpees"],
   "Core Blast": ["Planks", "Russian Twists", "Dead Bugs", "Bicycle Crunches"]
-};
+});
 
 const LogWorkout = () => {
   const [selectedRoutine, setSelectedRoutine] = useState("");
@@ -52,7 +54,38 @@ const LogWorkout = () => {
     if (savedWorkouts) {
       setWorkoutSets(JSON.parse(savedWorkouts));
     }
-  }, []);
+    
+    // Fetch workout data from API
+    const fetchWorkoutData = async () => {
+      try {
+        // API call to get workout routines and suggestions
+        try {
+          const response = await fetch('http://localhost:8000/workout-routines');
+          if (response.ok) {
+            const data = await response.json();
+            console.log("Workout data fetched from API:", data);
+            setRoutines(data.routines);
+            setWorkoutSuggestions(data.suggestions);
+          } else {
+            // If API call fails, we keep the initial state (already defined)
+            console.log("API call failed, using default data");
+          }
+        } catch (error) {
+          // If there's an error (e.g. backend not running), we keep the initial state
+          console.error("Error fetching workout data:", error);
+          toast({
+            title: "Connection Error",
+            description: "Using offline data. Connect to backend for real-time features.",
+            variant: "destructive",
+          });
+        }
+      } catch (error) {
+        console.error("Error in workout data fetching:", error);
+      }
+    };
+    
+    fetchWorkoutData();
+  }, [toast]);
 
   const addSet = () => {
     if (!selectedRoutine || !reps || !weight) {
@@ -101,7 +134,7 @@ const LogWorkout = () => {
     });
   };
 
-  const saveWorkout = () => {
+  const saveWorkout = async () => {
     if (workoutSets.length === 0) {
       toast({
         title: "No Sets to Save",
@@ -111,30 +144,62 @@ const LogWorkout = () => {
       return;
     }
 
-    // Save to localStorage
-    localStorage.setItem('fitpulse-workouts', JSON.stringify(workoutSets));
-    
-    // Update streak counter
-    updateStreak();
-    
-    // Show motivational quote
-    setShowQuote(true);
-    
-    // Trigger confetti animation
-    const saveButton = document.querySelector('.save-workout-btn') as HTMLElement;
-    saveButton?.classList.add('confetti-burst');
-    setTimeout(() => saveButton?.classList.remove('confetti-burst'), 1000);
-    
-    toast({
-      title: "Workout Saved! 🔥",
-      description: `${workoutSets.length} sets logged successfully. You're crushing it!`,
-    });
+    try {
+      // Save to both API and localStorage for redundancy
+      let apiSaveSuccessful = false;
+      
+      // Try to save to the API first
+      try {
+        const response = await fetch('http://localhost:8000/save-workout', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ workoutSets }),
+        });
+        
+        if (response.ok) {
+          apiSaveSuccessful = true;
+          console.log("Workout saved to API successfully");
+        } else {
+          console.log("API save failed, falling back to localStorage");
+        }
+      } catch (error) {
+        console.error("API save error, using localStorage instead:", error);
+      }
+      
+      // Always save to localStorage as backup
+      localStorage.setItem('fitpulse-workouts', JSON.stringify(workoutSets));
+      
+      // Update streak counter
+      updateStreak();
+      
+      // Show motivational quote
+      setShowQuote(true);
+      
+      // Trigger confetti animation
+      const saveButton = document.querySelector('.save-workout-btn') as HTMLElement;
+      saveButton?.classList.add('confetti-burst');
+      setTimeout(() => saveButton?.classList.remove('confetti-burst'), 1000);
+      
+      toast({
+        title: "Workout Saved! 🔥",
+        description: `${workoutSets.length} sets logged successfully${apiSaveSuccessful ? ' to cloud' : ''}. You're crushing it!`,
+      });
 
-    // Clear workout after a delay
-    setTimeout(() => {
-      setWorkoutSets([]);
-      setShowQuote(false);
-    }, 3000);
+      // Clear workout after a delay
+      setTimeout(() => {
+        setWorkoutSets([]);
+        setShowQuote(false);
+      }, 3000);
+    } catch (error) {
+      console.error("Error saving workout:", error);
+      toast({
+        title: "Save Failed",
+        description: "There was a problem saving your workout. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   const updateStreak = () => {

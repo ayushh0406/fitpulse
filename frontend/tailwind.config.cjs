@@ -17,6 +17,9 @@ module.exports = {
     },
     extend: {
       colors: {
+        "fitness-green": "#10B981", // Add custom fitness green color
+        "fitness-green-dark": "#059669", // Add custom fitness green dark color
+        "fitness-navy": "#001F3F", // Add custom fitness navy color
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

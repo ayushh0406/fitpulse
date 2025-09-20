@@ -9,6 +9,7 @@ import Home from "./pages/Home";
 import LogWorkout from "./pages/LogWorkout";
 import Progress from "./pages/Progress";
 import NotFound from "./pages/NotFound";
+import NutritionAnalysis from "./pages/NutritionAnalysis";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +26,7 @@ const App = () => (
             <Route path="/log-workout" element={<LogWorkout />} />
             <Route path="/progress" element={<Progress />} />
             <Route path="/posture-check" element={<PostureCheck />} />
+            <Route path="/nutrition" element={<NutritionAnalysis />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
