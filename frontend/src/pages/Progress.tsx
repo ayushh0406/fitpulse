@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { Chart } from "@/components/ui/chart";
+import { Chart } from "@/components/ui/custom-chart";
 import { Trophy, Calendar, Dumbbell, TrendingUp, Medal } from "lucide-react";
 
 const Progress = () => {
@@ -73,18 +73,10 @@ const Progress = () => {
   }
 
   // Format the weekly progress data for the chart
-  const chartData = {
-    labels: progressData.weekly_progress.map((day: any) => day.day),
-    datasets: [
-      {
-        label: 'Sets Completed',
-        data: progressData.weekly_progress.map((day: any) => day.sets),
-        backgroundColor: '#4ADE80',
-        borderColor: '#22c55e',
-        borderWidth: 2,
-      },
-    ],
-  };
+  const chartData = progressData.weekly_progress.map((day: any) => ({
+    labels: day.day,
+    data: day.sets,
+  }));
 
   return (
     <div className="min-h-screen bg-background py-8">
