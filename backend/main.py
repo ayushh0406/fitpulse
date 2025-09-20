@@ -1,5 +1,5 @@
 
-from fastapi import FastAPI, File, UploadFile, Query, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, File, UploadFile, Query, WebSocket, WebSocketDisconnect, Body
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
@@ -12,6 +12,8 @@ import re
 import json
 from enum import Enum
 from typing import Tuple, Dict, List, Optional
+from food_analysis import analyze_nutrition
+from workout_data import get_workout_data, save_workout, get_user_progress
 
 app = FastAPI()
 
@@ -314,6 +316,49 @@ async def get_available_exercises():
 async def health_check():
     """Simple health check endpoint."""
     return {"status": "healthy"}
+
+@app.get("/workout-routines")
+async def workout_routines_endpoint():
+    """Return available workout routines and suggestions."""
+    data = get_workout_data()
+    return JSONResponse(data)
+
+@app.post("/save-workout")
+async def save_workout_endpoint(workout_data: Dict = Body(...)):
+    """Save a user's workout data."""
+    try:
+        result = save_workout(workout_data)
+        return JSONResponse(result)
+    except Exception as e:
+        return JSONResponse(
+            status_code=500,
+            content={"error": f"Failed to save workout: {str(e)}"}
+        )
+
+@app.get("/user-progress/{user_id}")
+async def user_progress_endpoint(user_id: str = "default"):
+    """Get a user's workout progress."""
+    try:
+        data = get_user_progress(user_id)
+        return JSONResponse(data)
+    except Exception as e:
+        return JSONResponse(
+            status_code=500,
+            content={"error": f"Failed to get user progress: {str(e)}"}
+        )
+
+@app.post("/analyze-nutrition")
+async def nutrition_analysis_endpoint(file: UploadFile = File(...)):
+    """Analyze food image for nutritional information."""
+    try:
+        image_bytes = await file.read()
+        result = analyze_nutrition(image_bytes)
+        return JSONResponse(result)
+    except Exception as e:
+        return JSONResponse(
+            status_code=500,
+            content={"error": f"Failed to analyze image: {str(e)}"}
+        )
 
 # WebSocket connection manager
 class ConnectionManager:
