@@ -414,6 +414,86 @@ async def websocket_endpoint(websocket: WebSocket, exercise_type: str):
         print(f"WebSocket error: {str(e)}")
         manager.disconnect(websocket)
 
+# Achievement and social features
+@app.get("/achievements/{user_id}")
+async def get_user_achievements(user_id: str):
+    achievements = [
+        {"id": 1, "title": "First Workout", "description": "Complete your first workout", "unlocked": True, "date": "2024-01-15"},
+        {"id": 2, "title": "Week Warrior", "description": "Complete 7 workouts in a week", "unlocked": True, "date": "2024-01-22"},
+        {"id": 3, "title": "Month Master", "description": "Complete 30 workouts in a month", "unlocked": False, "date": None},
+        {"id": 4, "title": "Nutrition Ninja", "description": "Log 50 meals", "unlocked": True, "date": "2024-02-01"},
+        {"id": 5, "title": "Streak Superstar", "description": "Maintain a 30-day workout streak", "unlocked": False, "date": None}
+    ]
+    return {"achievements": achievements, "total_unlocked": len([a for a in achievements if a["unlocked"]])}
+
+@app.get("/workout-recommendations/{user_id}")
+async def get_workout_recommendations(user_id: str):
+    recommendations = [
+        {
+            "id": 1,
+            "title": "Morning Energy Boost",
+            "duration": "20 min",
+            "exercises": 8,
+            "difficulty": "beginner",
+            "category": "Cardio",
+            "description": "Perfect for starting your day with energy"
+        },
+        {
+            "id": 2,
+            "title": "Strength Builder",
+            "duration": "35 min",
+            "exercises": 12,  
+            "difficulty": "intermediate",
+            "category": "Strength",
+            "description": "Build muscle and increase strength"
+        },
+        {
+            "id": 3,
+            "title": "HIIT Challenge",
+            "duration": "25 min",
+            "exercises": 10,
+            "difficulty": "advanced", 
+            "category": "HIIT",
+            "description": "High-intensity interval training"
+        }
+    ]
+    return {"recommendations": recommendations}
+
+@app.post("/social/share-progress")
+async def share_progress(data: dict = Body(...)):
+    return {
+        "success": True,
+        "message": "Progress shared successfully!",
+        "share_url": f"https://fitpulse.app/progress/{data.get('user_id', 'demo')}",
+        "engagement": {
+            "likes": 15,
+            "comments": 3,
+            "shares": 2
+        }
+    }
+
+@app.get("/stats/dashboard/{user_id}")
+async def get_dashboard_stats(user_id: str):
+    return {
+        "weekly_summary": {
+            "workouts_completed": 5,
+            "calories_burned": 2400,
+            "active_minutes": 180,
+            "streak_days": 7
+        },
+        "monthly_goals": {
+            "workout_goal": 20,
+            "workouts_completed": 15,
+            "nutrition_goal": 25,
+            "meals_logged": 18
+        },
+        "recent_activities": [
+            {"type": "workout", "name": "Morning Cardio", "date": "2024-09-24", "duration": 30},
+            {"type": "meal", "name": "Protein Smoothie", "date": "2024-09-24", "calories": 280},
+            {"type": "achievement", "name": "Week Warrior", "date": "2024-09-23", "points": 100}
+        ]
+    }
+
 if __name__ == "__main__":
     # Start the FastAPI app with Uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
