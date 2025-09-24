@@ -2,11 +2,14 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { Star, Download, Dumbbell, Flame } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Star, Download, Dumbbell, Flame, User, Calendar, Target } from "lucide-react";
 import MotivationalQuote from "@/components/MotivationalQuote";
+import { useAuthStore } from "../lib/auth";
 import heroImage from "@/assets/fitness-hero.jpg";
 
 const Home = () => {
+  const { user, isAuthenticated } = useAuthStore();
   const [animateHero, setAnimateHero] = useState(false);
   const [animateDumbbell, setAnimateDumbbell] = useState(false);
   const [streak, setStreak] = useState(0);
@@ -65,6 +68,37 @@ const Home = () => {
         </div>
         
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
+          {/* User Welcome */}
+          {isAuthenticated && (
+            <div className="mb-12">
+              <Card className="bg-white/80 backdrop-blur-sm border-fitness-green/20 shadow-lg">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-4">
+                      <div className="w-12 h-12 bg-fitness-green rounded-full flex items-center justify-center">
+                        <User className="h-6 w-6 text-white" />
+                      </div>
+                      <div>
+                        <h2 className="text-2xl font-bold text-gray-900">Welcome back, {user?.username}!</h2>
+                        <p className="text-gray-600">Ready to crush your fitness goals today?</p>
+                      </div>
+                    </div>
+                    <div className="flex space-x-2">
+                      <Badge variant="secondary" className="bg-fitness-green/10 text-fitness-green border-fitness-green/30">
+                        <Calendar className="h-3 w-3 mr-1" />
+                        Day {streak + 1}
+                      </Badge>
+                      <Badge variant="secondary" className="bg-blue-500/10 text-blue-600 border-blue-500/30">
+                        <Target className="h-3 w-3 mr-1" />
+                        Goal: {user?.preferences?.fitnessGoal?.replace('-', ' ') || 'General Fitness'}
+                      </Badge>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          )}
+          
           <div className="text-center">
             {/* Animated Dumbbell Icon */}
             <div className={`inline-block mb-6 ${animateDumbbell ? 'bounce-in' : 'opacity-0'}`}>
