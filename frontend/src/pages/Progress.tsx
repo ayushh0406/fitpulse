@@ -1,13 +1,19 @@
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { Chart } from "@/components/ui/custom-chart";
-import { Trophy, Calendar, Dumbbell, TrendingUp, Medal } from "lucide-react";
+import { Trophy, Calendar, Dumbbell, TrendingUp, Medal, Users, Share2, Target } from "lucide-react";
+import { useAuthStore } from '../lib/auth';
 
 const Progress = () => {
+  const { user, isAuthenticated } = useAuthStore();
   const [loading, setLoading] = useState(true);
   const [progressData, setProgressData] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
+  const [weeklyGoal, setWeeklyGoal] = useState(5);
+  const [currentStreak, setCurrentStreak] = useState(7);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -37,6 +43,22 @@ const Progress = () => {
 
     fetchProgressData();
   }, [toast]);
+
+  const shareProgress = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: 'My FitPulse Progress',
+        text: `I've completed ${currentStreak} days of workouts! Join me on FitPulse.`,
+        url: window.location.href,
+      });
+    } else {
+      navigator.clipboard.writeText(`I've completed ${currentStreak} days of workouts on FitPulse! ${window.location.href}`);
+      toast({
+        title: "Link Copied!",
+        description: "Progress link copied to clipboard",
+      });
+    }
+  };
 
   if (loading) {
     return (
@@ -84,6 +106,51 @@ const Progress = () => {
         <h1 className="heading-brutal text-3xl lg:text-4xl font-black mb-8 text-center">
           Progress & <span className="text-fitness-green">Community</span>
         </h1>
+        
+        {/* User Stats Header */}
+        {isAuthenticated && (
+          <div className="mb-8">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+              <Card className="text-center">
+                <CardContent className="p-4">
+                  <Trophy className="h-8 w-8 text-fitness-green mx-auto mb-2" />
+                  <div className="text-2xl font-bold">{currentStreak}</div>
+                  <div className="text-sm text-muted-foreground">Day Streak</div>
+                </CardContent>
+              </Card>
+              <Card className="text-center">
+                <CardContent className="p-4">
+                  <Target className="h-8 w-8 text-blue-500 mx-auto mb-2" />
+                  <div className="text-2xl font-bold">{weeklyGoal}/7</div>
+                  <div className="text-sm text-muted-foreground">Weekly Goal</div>
+                </CardContent>
+              </Card>
+              <Card className="text-center">
+                <CardContent className="p-4">
+                  <Medal className="h-8 w-8 text-yellow-500 mx-auto mb-2" />
+                  <div className="text-2xl font-bold">12</div>
+                  <div className="text-sm text-muted-foreground">Achievements</div>
+                </CardContent>
+              </Card>
+              <Card className="text-center">
+                <CardContent className="p-4">
+                  <Users className="h-8 w-8 text-purple-500 mx-auto mb-2" />
+                  <div className="text-2xl font-bold">24</div>
+                  <div className="text-sm text-muted-foreground">Friends</div>
+                </CardContent>
+              </Card>
+            </div>
+            <div className="flex justify-center space-x-4 mb-8">
+              <Button onClick={shareProgress} variant="outline" className="flex items-center space-x-2">
+                <Share2 className="h-4 w-4" />
+                <span>Share Progress</span>
+              </Button>
+              <Badge variant="secondary" className="px-4 py-2">
+                Goal: {user?.preferences?.fitnessGoal?.replace('-', ' ') || 'General Fitness'}
+              </Badge>
+            </div>
+          </div>
+        )}
         
         {/* Summary Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
