@@ -3,6 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { useEffect } from "react";
 import PostureCheck from "./pages/PostureCheck";
 import Navigation from "./components/Navigation";
 import Home from "./pages/Home";
@@ -16,6 +17,7 @@ import Profile from "./pages/Profile";
 import NutritionTracker from "./pages/NutritionTracker";
 import RecipeBrowser from "./pages/RecipeBrowser";
 import { useAuthStore } from "./lib/auth";
+import { useThemeStore } from "./lib/theme";
 
 const queryClient = new QueryClient();
 
@@ -30,12 +32,20 @@ const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
   return children;
 };
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
+const App = () => {
+  const { setTheme, theme } = useThemeStore();
+  
+  useEffect(() => {
+    // Initialize theme on app start
+    setTheme(theme);
+  }, []);
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
         <div className="min-h-screen bg-background">
           <Navigation />
           <Routes>
@@ -65,6 +75,7 @@ const App = () => (
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
-);
+  );
+};
 
 export default App;

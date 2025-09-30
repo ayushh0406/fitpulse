@@ -1,6 +1,7 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import { Dumbbell, BarChart3, Camera, Home, Apple, User, LogIn, LogOut, ChefHat, CalendarCheck, Menu } from "lucide-react";
+import { Dumbbell, BarChart3, Camera, Home, Apple, User, LogIn, LogOut, ChefHat, CalendarCheck, Menu, Moon, Sun } from "lucide-react";
 import { useAuthStore } from "../lib/auth";
+import { useThemeStore } from "../lib/theme";
 import { Button } from "./ui/button";
 import { 
   DropdownMenu, 
@@ -15,6 +16,7 @@ import { useState } from "react";
 
 const Navigation = () => {
   const { user, isAuthenticated, logout } = useAuthStore();
+  const { resolvedTheme, toggleTheme } = useThemeStore();
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -132,8 +134,21 @@ const Navigation = () => {
             </NavLink>
           </div>
 
-          {/* User menu or auth buttons */}
+          {/* Theme toggle and user menu */}
           <div className="hidden lg:flex items-center space-x-2">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={toggleTheme}
+              className="text-white hover:bg-white/10"
+            >
+              {resolvedTheme === 'dark' ? (
+                <Sun className="h-4 w-4" />
+              ) : (
+                <Moon className="h-4 w-4" />
+              )}
+            </Button>
+            
             {isAuthenticated ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -304,6 +319,18 @@ const Navigation = () => {
                   </NavLink>
                   
                   <div className="border-t pt-3 mt-3">
+                    <button
+                      onClick={toggleTheme}
+                      className="w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-all duration-200 mb-2"
+                    >
+                      {resolvedTheme === 'dark' ? (
+                        <Sun className="h-5 w-5" />
+                      ) : (
+                        <Moon className="h-5 w-5" />
+                      )}
+                      <span>{resolvedTheme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
+                    </button>
+                    
                     {isAuthenticated ? (
                       <>
                         <div className="px-4 py-2 text-sm text-gray-600">
