@@ -2,7 +2,9 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { Dumbbell, BarChart3, Camera, Home, Apple, User, LogIn, LogOut, ChefHat, CalendarCheck, Menu, Moon, Sun } from "lucide-react";
 import { useAuthStore } from "../lib/auth";
 import { useThemeStore } from "../lib/theme";
+import { useOfflineStore } from "../lib/offline";
 import { Button } from "./ui/button";
+import { NotificationCenter } from "./ui/notification-center";
 import { 
   DropdownMenu, 
   DropdownMenuContent, 
@@ -17,6 +19,7 @@ import { useState } from "react";
 const Navigation = () => {
   const { user, isAuthenticated, logout } = useAuthStore();
   const { resolvedTheme, toggleTheme } = useThemeStore();
+  const { isOnline } = useOfflineStore();
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -134,8 +137,17 @@ const Navigation = () => {
             </NavLink>
           </div>
 
-          {/* Theme toggle and user menu */}
+          {/* Theme toggle, notifications and user menu */}
           <div className="hidden lg:flex items-center space-x-2">
+            {/* Offline Indicator */}
+            {!isOnline && (
+              <div className="bg-red-500 text-white px-2 py-1 rounded-md text-xs font-medium">
+                Offline
+              </div>
+            )}
+            
+            <NotificationCenter />
+            
             <Button
               variant="ghost"
               size="sm"
