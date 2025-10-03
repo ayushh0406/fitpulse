@@ -46,17 +46,6 @@ export const useThemeStore = create<ThemeState>()(
     }),
     {
       name: 'fitpulse-theme-storage',
-      onRehydrate: (state) => {
-        if (state) {
-          // Initialize theme on app load
-          const resolved = resolveTheme(state.theme);
-          state.resolvedTheme = resolved;
-          
-          const root = document.documentElement;
-          root.classList.remove('light', 'dark');
-          root.classList.add(resolved);
-        }
-      }
     }
   )
 );

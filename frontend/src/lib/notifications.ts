@@ -154,18 +154,6 @@ export const useNotificationStore = create<NotificationState>()(
     }),
     {
       name: 'fitpulse-notifications-storage',
-      onRehydrate: (state) => {
-        if (state) {
-          // Request notification permission on app load
-          if ('Notification' in window && Notification.permission === 'default') {
-            Notification.requestPermission();
-          }
-          
-          // Schedule reminders
-          state.scheduleWorkoutReminder();
-          state.scheduleMealReminder();
-        }
-      }
     }
   )
 );

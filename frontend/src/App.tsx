@@ -38,7 +38,12 @@ const App = () => {
   useEffect(() => {
     // Initialize theme on app start
     setTheme(theme);
-  }, []);
+    
+    // Request notification permission
+    if ('Notification' in window && Notification.permission === 'default') {
+      Notification.requestPermission();
+    }
+  }, [setTheme, theme]);
 
   return (
     <QueryClientProvider client={queryClient}>
