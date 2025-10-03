@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dumbbell, Plus, Save, Trash2, Lightbulb } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import MotivationalQuote from "@/components/MotivationalQuote";
+import { WorkoutTimer } from "@/components/WorkoutTimer";
 
 interface WorkoutSet {
   id: string;
@@ -260,6 +261,16 @@ const LogWorkout = () => {
           <p className="text-lg text-muted-foreground">
             Track every rep, every set, every victory
           </p>
+        </div>
+
+        {/* Workout Timer */}
+        <div className="mb-8">
+          <WorkoutTimer onComplete={(duration) => {
+            toast({
+              title: "Workout Completed! 🎉",
+              description: `Great job! You worked out for ${Math.floor(duration / 60)} minutes and ${duration % 60} seconds.`,
+            });
+          }} />
         </div>
 
         <div className="grid lg:grid-cols-2 gap-8">
