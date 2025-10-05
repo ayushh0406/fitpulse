@@ -37,11 +37,15 @@ const App = () => {
   
   useEffect(() => {
     // Initialize theme on app start
-    setTheme(theme);
-    
-    // Request notification permission
-    if ('Notification' in window && Notification.permission === 'default') {
-      Notification.requestPermission();
+    try {
+      setTheme(theme);
+      
+      // Request notification permission
+      if ('Notification' in window && Notification.permission === 'default') {
+        Notification.requestPermission();
+      }
+    } catch (error) {
+      console.error('Theme initialization error:', error);
     }
   }, [setTheme, theme]);
 

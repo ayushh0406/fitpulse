@@ -8,7 +8,7 @@ interface WorkoutTimerProps {
   className?: string;
 }
 
-export function WorkoutTimer({ onComplete, className }: WorkoutTimerProps) {
+export default function WorkoutTimer({ onComplete, className }: WorkoutTimerProps) {
   const [time, setTime] = useState(0); // seconds
   const [isRunning, setIsRunning] = useState(false);
   const [isPaused, setIsPaused] = useState(false);

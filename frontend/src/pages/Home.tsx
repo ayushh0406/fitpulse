@@ -5,8 +5,7 @@ import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Star, Download, Dumbbell, Flame, User, Calendar, Target } from "lucide-react";
 import MotivationalQuote from "@/components/MotivationalQuote";
-import { QuickStats } from "@/components/QuickStats";
-import { WorkoutTimer } from "@/components/WorkoutTimer";
+
 import { useAuthStore } from "../lib/auth";
 import heroImage from "@/assets/fitness-hero.jpg";
 
@@ -185,18 +184,9 @@ const Home = () => {
               </CardContent>
             </Card>
 
-            {/* Quick Stats Dashboard */}
-            <QuickStats className={`mb-12 ${animateHero ? 'slide-up' : 'opacity-0'}`} />
-
-            {/* Workout Timer & Motivational Quote */}
-            <div className={`grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-4xl mx-auto ${animateHero ? 'slide-up' : 'opacity-0'}`}>
-              <WorkoutTimer onComplete={(duration) => {
-                console.log(`Workout completed in ${duration} seconds`);
-                // Save workout duration to backend
-              }} />
-              <div className="flex items-center">
-                <MotivationalQuote />
-              </div>
+            {/* Motivational Quote */}
+            <div className={`max-w-lg mx-auto ${animateHero ? 'slide-up' : 'opacity-0'}`}>
+              <MotivationalQuote />
             </div>
           </div>
         </div>

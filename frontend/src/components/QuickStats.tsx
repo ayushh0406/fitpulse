@@ -8,7 +8,7 @@ interface QuickStatsProps {
   className?: string;
 }
 
-export function QuickStats({ className }: QuickStatsProps) {
+export default function QuickStats({ className }: QuickStatsProps) {
   const { user, isAuthenticated } = useAuthStore();
 
   if (!isAuthenticated) return null;
